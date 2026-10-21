@@ -1,0 +1,442 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@source "../node_modules/streamdown/dist/index.js";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.269 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.371 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+@theme inline {
+  --font-sans:
+    var(--font-public-sans), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-mono:
+    var(--font-commit-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-foreground/20 outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.jarvis-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  contain: strict;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 50% 49%, rgb(0 125 158 / 26%), transparent 18%),
+    radial-gradient(circle at 18% 7%, rgb(2 54 80 / 38%), transparent 30%),
+    linear-gradient(135deg, #01050e 0%, #020914 52%, #01040b 100%);
+  pointer-events: none;
+}
+
+.jarvis-background__haze,
+.jarvis-background__grid {
+  position: absolute;
+  inset: -10%;
+}
+
+.jarvis-background__ambient {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 38% 42%, rgb(0 235 255 / 14%), transparent 10%),
+    radial-gradient(circle at 65% 55%, rgb(36 160 255 / 10%), transparent 18%);
+  filter: blur(14px);
+  will-change: transform;
+  animation: jarvis-ambient 22s ease-in-out infinite alternate;
+}
+
+.jarvis-background__haze {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 8%,
+    rgb(0 3 10 / 24%) 52%,
+    rgb(0 2 8 / 76%) 100%
+  );
+  filter: blur(2px);
+}
+
+.jarvis-background__grid {
+  opacity: 0.09;
+  background-image:
+    linear-gradient(rgb(31 213 255 / 18%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(31 213 255 / 18%) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(circle at center, black, transparent 76%);
+  filter: blur(0.8px);
+}
+
+.jarvis-background__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 20%, rgb(0 1 5 / 72%) 100%);
+}
+
+.jarvis-background__hud {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100vw, 1440px);
+  min-width: 980px;
+  height: auto;
+  transform: translate3d(-50%, -50%, 0);
+  color: #14d8ff;
+  opacity: 0.88;
+}
+
+.jarvis-background__glow-layer {
+  filter: blur(1.8px) drop-shadow(0 0 7px rgb(0 221 255 / 42%));
+}
+
+.jarvis-background__module,
+.jarvis-background__target,
+.jarvis-background__orbit,
+.jarvis-background__ticks {
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.jarvis-background__target {
+  opacity: 0.4;
+}
+
+.jarvis-background__module {
+  opacity: 0.52;
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: blur(0.7px);
+  will-change: transform, opacity;
+  animation: jarvis-float 8s ease-in-out infinite alternate;
+}
+
+.jarvis-background__module--top,
+.jarvis-background__module--data {
+  animation-delay: -4s;
+}
+
+.jarvis-background__module--chart,
+.jarvis-background__module--wave {
+  animation-delay: -7s;
+}
+
+.jarvis-background__ring {
+  stroke-width: 1.4;
+  opacity: 0.5;
+}
+
+.jarvis-background__ring--segments {
+  stroke-width: 15;
+  stroke-dasharray: 11 7;
+  opacity: 0.82;
+  transform-box: view-box;
+  transform-origin: 720px 466px;
+  will-change: transform;
+  animation: jarvis-rotate 14s linear infinite;
+}
+
+.jarvis-background__ring--outer {
+  stroke-dasharray: 220 34 12 18;
+  transform-origin: 720px 466px;
+  transform-box: view-box;
+  will-change: transform;
+  animation: jarvis-rotate 24s linear infinite;
+}
+
+.jarvis-background__ring--bright {
+  stroke-width: 4;
+  stroke-dasharray: 480 112;
+  transform-origin: 720px 466px;
+  transform-box: view-box;
+  will-change: transform;
+  animation: jarvis-rotate-reverse 15s linear infinite;
+}
+
+.jarvis-background__ring--inner {
+  stroke-dasharray: 20 12;
+  transform-origin: 720px 466px;
+  transform-box: view-box;
+  will-change: transform;
+  animation: jarvis-rotate 10s linear infinite;
+}
+
+.jarvis-background__core-dot {
+  fill: currentColor;
+  stroke: none;
+}
+
+.jarvis-background__crosshair {
+  opacity: 0.62;
+  stroke-width: 2;
+}
+
+.jarvis-background__ticks {
+  stroke-width: 1.5;
+  opacity: 0.72;
+  transform-origin: 720px 466px;
+  transform-box: view-box;
+  will-change: transform;
+  animation: jarvis-rotate-reverse 22s linear infinite;
+}
+
+.jarvis-background__orbit {
+  transform-origin: 1230px 170px;
+  transform-box: view-box;
+  will-change: transform;
+  animation: jarvis-rotate 18s linear infinite;
+}
+
+.jarvis-background__arc {
+  stroke-width: 5;
+  stroke-dasharray: 80 520;
+  animation: jarvis-arc-pulse 5.5s linear infinite;
+}
+
+.jarvis-background__circuit path,
+.jarvis-background__circuit circle,
+.jarvis-background__circuit ellipse {
+  stroke-dasharray: 260;
+  animation: jarvis-circuit-flow 7s linear infinite;
+}
+
+.jarvis-background__data-line {
+  stroke-dasharray: 34 22;
+  animation: jarvis-data-flow 5s linear infinite;
+}
+
+.jarvis-background__data-pixel {
+  fill: currentColor;
+  stroke: none;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: jarvis-pixel 4s steps(2, end) infinite;
+}
+
+.jarvis-background__data-pixel:nth-of-type(3n) {
+  animation-delay: -0.7s;
+}
+
+.jarvis-background__chart-bars {
+  stroke-dasharray: 118;
+  stroke-dashoffset: 78;
+  animation: jarvis-chart 5.5s ease-in-out infinite alternate;
+}
+
+.jarvis-background__waveform {
+  stroke-dasharray: 440;
+  stroke-dashoffset: 440;
+  animation: jarvis-wave 6.5s ease-in-out infinite;
+}
+
+.jarvis-background__particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: #21ddff;
+  box-shadow: 0 0 14px #21ddff;
+  opacity: 0.32;
+  will-change: transform, opacity;
+  animation: jarvis-twinkle 5s ease-in-out infinite;
+}
+
+@keyframes jarvis-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes jarvis-rotate-reverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes jarvis-pulse {
+  50% {
+    opacity: 0.24;
+    stroke-width: 4;
+  }
+}
+
+@keyframes jarvis-ambient {
+  to {
+    transform: translate3d(6%, -4%, 0) scale(1.15);
+  }
+}
+
+@keyframes jarvis-data-flow {
+  to {
+    stroke-dashoffset: -224;
+  }
+}
+
+@keyframes jarvis-circuit-flow {
+  to {
+    stroke-dashoffset: -520;
+  }
+}
+
+@keyframes jarvis-arc-pulse {
+  to {
+    stroke-dashoffset: -600;
+  }
+}
+
+@keyframes jarvis-pixel {
+  50% {
+    opacity: 0.15;
+    transform: scale(0.5);
+  }
+}
+
+@keyframes jarvis-chart {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes jarvis-wave {
+  45% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -440;
+  }
+}
+
+@keyframes jarvis-float {
+  to {
+    transform: translateY(-9px);
+    opacity: 0.78;
+  }
+}
+
+@keyframes jarvis-twinkle {
+  50% {
+    opacity: 0.9;
+    transform: scale(1.8);
+  }
+}
+
+@media (max-width: 700px) {
+  .jarvis-background__hud {
+    min-width: 760px;
+    opacity: 0.42;
+  }
+
+  .jarvis-background__module--left,
+  .jarvis-background__module--data,
+  .jarvis-background__module--chart {
+    opacity: 0.22;
+  }
+}
