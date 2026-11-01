@@ -1,9 +1,10 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { TokenSource } from 'livekit-client';
-import { useSession } from '@livekit/components-react';
+import { useRoomContext, useSession } from '@livekit/components-react';
 import { WarningIcon } from '@phosphor-icons/react/dist/ssr';
+import { toast } from 'sonner';
 import type { AppConfig } from '@/app-config';
 import { AgentSessionProvider } from '@/components/agents-ui/agent-session-provider';
 import { StartAudioButton } from '@/components/agents-ui/start-audio-button';
@@ -16,9 +17,58 @@ import { getSandboxTokenSource } from '@/lib/utils';
 
 const IN_DEVELOPMENT = process.env.NODE_ENV !== 'production';
 
+const ALLOWED_HOSTS = [
+  'youtube.com',
+  'google.com',
+  'wikipedia.org',
+  'github.com',
+  'bbc.co.uk',
+  'reddit.com',
+  'facebook.com',
+  'twitter.com',
+  'instagram.com',
+];
+
+function toAllowedUrl(raw: string): URL | null {
+  try {
+    const url = new URL(raw);
+    if (url.protocol !== 'https:') return null;
+    const ok = ALLOWED_HOSTS.some(
+      (host) => url.hostname === host || url.hostname.endsWith('.' + host)
+    );
+    return ok ? url : null;
+  } catch {
+    return null;
+  }
+}
+
 function AppSetup() {
+  const room = useRoomContext();
   useDebugMode({ enabled: IN_DEVELOPMENT });
   useAgentErrors();
+
+  useEffect(() => {
+    room.localParticipant.registerRpcMethod('open_url', async (data) => {
+      const url = toAllowedUrl(data.payload);
+      if (!url) return 'blocked';
+
+      const tab = window.open(url.href, '_blank');
+      if (tab) {
+        tab.opener = null;
+      } else {
+        toast(`Open ${url.hostname}?`, {
+          action: {
+            label: 'Open',
+            onClick: () => window.open(url.href, '_blank'),
+          },
+        });
+      }
+      return 'ok';
+    });
+    return () => {
+      room.localParticipant.unregisterRpcMethod('open_url');
+    };
+  }, [room]);
 
   return null;
 }

@@ -1,11 +1,11 @@
 """Nova's standalone tools: web search, weather, and opening websites."""
 
 import asyncio
-import webbrowser
 
 import aiohttp
 from ddgs import DDGS
-from livekit.agents import function_tool
+from livekit import rtc
+from livekit.agents import function_tool, get_job_context
 from livekit.agents.llm import ToolError
 
 # Open-Meteo needs no API key: geocoding resolves a place name, the forecast
@@ -162,5 +162,24 @@ async def open_website(site: str) -> str:
         )
         raise ToolError(f"I can only open sites like {allowed}. I cannot open {site}.")
 
-    webbrowser.open(url)
-    return f"Opened {site} in the browser."
+    # The agent runs in the cloud, so it asks the user's own browser to open the page.
+    room = get_job_context().room
+    viewers = [
+        p
+        for p in room.remote_participants.values()
+        if p.kind == rtc.ParticipantKind.PARTICIPANT_KIND_STANDARD
+    ]
+    if not viewers:
+        raise ToolError("I cannot find your browser right now.")
+
+    try:
+        await room.local_participant.perform_rpc(
+            destination_identity=viewers[0].identity,
+            method="open_url",
+            payload=url,
+            response_timeout=5.0,
+        )
+    except rtc.RpcError:
+        raise ToolError("Your browser did not accept the request to open it.") from None
+
+    return f"Opened {site} in your browser."
